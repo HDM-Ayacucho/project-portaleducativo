@@ -1,0 +1,85 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout title="Juego de Letras">
+  <div class="flex justify-center items-center h-screen">
+    <div class="bg-gradient-to-r from-pink-400 to-purple-500 rounded-lg p-8 shadow-lg">
+      <h1 class="text-3xl font-bold text-white mb-6">¡Adivinar vocalkunata!</h1>
+      <div id="game" class="bg-white rounded-lg p-4">
+        <div id="image-container" class="mb-10">
+            <img id="image" src="" alt="Imagen" class="w-full h-64 object-contain">
+        </div>
+        <div id="options" class="grid grid-cols-2 gap-4"></div>
+        <button id="nextQuestion" class="bg-green-500 text-white py-2 px-4 rounded mt-4 hover:bg-green-600">Qatiq</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+    {
+        image: "/public/juegos/a.jpg",
+        options: ["I", "A", "U", "O","E"],
+        answer: "A"
+      },
+      {
+        image: "/public/juegos/e.jpg",
+        options: ["U", "E", "O", "I","A"],
+        answer: "E"
+      },
+      {
+        image: "/public/juegos/i.jpeg",
+        options: ["O", "A", "U", "E","I"],
+        answer: "I"
+      },
+      {
+        image: "/public/juegos/o.png",
+        options: ["I", "E", "U", "A","O"],
+        answer: "O"
+      },
+      {
+        image: "/public/juegos/u.png",
+        options: ["A", "O", "I", "U","E"],
+        answer: "U"
+      },
+    ];
+
+    let currentQuestion = 0;
+    const imageElement = document.getElementById("image");
+    const optionsElement = document.getElementById("options");
+    const nextQuestionButton = document.getElementById("nextQuestion");
+
+    function displayQuestion() {
+      const question = questions[currentQuestion];
+      imageElement.src = question.image;
+      optionsElement.innerHTML = "";
+
+      for (const option of question.options) {
+        const optionButton = document.createElement("button");
+        optionButton.textContent = option;
+        optionButton.classList.add("bg-pink-500", "text-white", "py-2", "px-4", "rounded", "hover:bg-pink-600");
+        optionButton.addEventListener("click", () => checkAnswer(option, question.answer));
+        optionsElement.appendChild(optionButton);
+      }
+    }
+
+    function checkAnswer(selectedOption, correctAnswer) {
+      if (selectedOption === correctAnswer) {
+        alert("¡Correcto!");
+      } else {
+        alert("Inténtalo de nuevo");
+      }
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        displayQuestion();
+      } else {
+        alert("¡Felicidades, has terminado el juego!");
+        currentQuestion = 0;
+      }
+    }
+
+    nextQuestionButton.addEventListener("click", displayQuestion);
+    displayQuestion();
+  </script>
+</Layout>
